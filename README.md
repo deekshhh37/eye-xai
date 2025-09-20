@@ -25,7 +25,7 @@ This project is trained and tested on publicly available **retinal fundus image 
 * **IDRiD (Indian Diabetic Retinopathy Dataset)** – [Link](https://idrid.grand-challenge.org/)
 * **Zenodo DR Fundus Dataset (757 images)** – [Link](https://zenodo.org/records/4647952)
 
-> ⚠️ Datasets are not included in this repo. Download separately and place inside the `data/` folder.
+> ⚠️ Datasets are not included in this repo. Download separately.
 
 ---
 
