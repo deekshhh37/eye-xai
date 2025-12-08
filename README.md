@@ -36,7 +36,6 @@ eye-xai/
  │   ┗ training_curve_v3.png
  ┣ requirements.txt
  ┣ README.md
- ┗ .gitignore
 ```
 
 ---
