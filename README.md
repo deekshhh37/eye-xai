@@ -221,5 +221,3 @@ V3 fine-tuning demonstrated the highest performance with:
 ## 📄 **License**
 
 This project is for academic and research purposes.
-
-Just say: **“Add badges”**, **“Add architecture diagram”**, or **“Add deployment section.”**
