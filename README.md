@@ -1,74 +1,225 @@
-# eye-xai
+![gradcam_side_by_side](https://github.com/user-attachments/assets/5beb306d-6414-401e-ae86-39d352b61d78)
+# **Eye-XAI: Explainable Diabetic Retinopathy Classification using MobileNetV3**
 
-**Lightweight and Explainable Deep Learning for Diabetic Retinopathy Detection**
-
-`eye-xai` is a deep learning project for classifying **retinal fundus images** into Diabetic Retinopathy (DR) severity levels. It uses **MobileNetV3-Small** for efficiency and integrates **Grad-CAM** to provide visual explanations of predictions. The goal is to deliver **accurate, lightweight, and interpretable AI models** for reliable DR screening in healthcare.
-
----
-
-## 🚀 Features
-
-* **Classification:** Predicts 5 severity levels of DR (No DR → Proliferative DR).
-* **Lightweight Model:** MobileNetV3-Small backbone with reduced parameters.
-* **Explainability:** Grad-CAM heatmaps to highlight key retinal regions.
-* **Performance:** Evaluated with Accuracy, Sensitivity, Specificity, and F1-score.
-* **Imbalance Handling:** Uses augmentation and class weighting to improve early DR detection.
+Eye-XAI is a lightweight, explainable deep-learning system for **Diabetic Retinopathy (DR) classification** using **MobileNetV3**.
+The model predicts **7 DR severity levels** and provides **Grad-CAM heatmaps** that highlight clinically relevant retinal regions used during prediction — improving transparency and trust in AI-assisted medical screening.
 
 ---
 
-## 📁 Datasets
+## ⭐ **Key Features**
 
-This project is trained and tested on publicly available **retinal fundus image datasets**:
-
-* **APTOS 2019 Blindness Detection** – [Link](https://www.kaggle.com/competitions/aptos2019-blindness-detection)
-* **EyePACS Dataset** – [Link](https://www.kaggle.com/c/diabetic-retinopathy-detection/data)
-* **IDRiD (Indian Diabetic Retinopathy Dataset)** – [Link](https://idrid.grand-challenge.org/)
-* **Zenodo DR Fundus Dataset (757 images)** – [Link](https://zenodo.org/records/4647952)
-
-> ⚠️ Datasets are not included in this repo. Download separately.
+* **MobileNetV3-Small** model for fast and deployable DR classification
+* **7-class severity prediction** (No DR → Advanced PDR)
+* **CLAHE preprocessing** for enhanced retinal visibility
+* **Data augmentation + class balancing**
+* **Fine-tuning pipelines (V1, V2, V3)** to improve accuracy
+* **Grad-CAM explainability** for lesion localization
+* **Training curves + sample outputs included**
+* Clean and modular project structure (`src/`)
 
 ---
 
-## ⚙️ Installation
+## 📂 **Project Structure**
 
-Clone the repo and install dependencies:
+```
+eye-xai/
+ ┣ src/
+ │   ┣ fine_tune.py             # Baseline fine-tuning
+ │   ┣ fine_tune_v2.py          # CLAHE + augmentation pipeline
+ │   ┣ fine_tune_v3.py          # Best performing pipeline (Focal Loss, TTA)
+ │   ┣ grad_cam.py              # Grad-CAM visualization
+ │   ┣ main.py                  # Inference pipeline
+ │   ┗ split_data.py            # Train/Val/Test dataset splitter
+ ┣ outputs/
+ │   ┣ gradcam_result.jpg
+ │   ┣ gradcam_side_by_side.jpg
+ │   ┗ training_curve_v3.png
+ ┣ requirements.txt
+ ┣ README.md
+ ┗ .gitignore
+```
+
+---
+
+## 📥 **Dataset**
+
+This project uses the official **"Dataset from Fundus Images for the Study of Diabetic Retinopathy – Version V03"**.
+
+
+[https://zenodo.org/records/4647952](https://zenodo.org/records/4647952)
+
+
+This dataset contains 7 DR classes:
+
+1. No DR
+2. Mild NPDR
+3. Moderate NPDR
+4. Severe NPDR
+5. Very Severe NPDR
+6. Proliferative DR
+7. Advanced PDR
+
+### 📁 **Dataset Folder Structure**
+
+```
+dataset/
+ ┣ 0_No_DR/
+ ┣ 1_Mild/
+ ┣ 2_Moderate/
+ ┣ 3_Severe/
+ ┣ 4_Very_Severe/
+ ┣ 5_Proliferative/
+ ┗ 6_Advanced_PDR/
+```
+
+---
+
+## 🔧 **Installation**
+
+### **1. Clone the repository**
 
 ```bash
-git clone https://github.com/<your-username>/eye-xai.git
+git clone https://github.com/deekshhh37/eye-xai.git
 cd eye-xai
+```
+
+### **2. Create and activate virtual environment**
+
+Windows:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+Mac/Linux:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### **3. Install dependencies**
+
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🔧 Training
+## 🛠️ **Prepare Train/Val/Test Split**
 
-Example (APTOS dataset):
+Run:
 
 ```bash
-python src/train.py --config configs/aptos.yaml
+python src/split_data.py
+```
+
+This will generate:
+
+```
+data_split/
+ ┣ train/
+ ┣ val/
+ ┗ test/
+```
+
+> ⚠️ This folder is ignored by GitHub to prevent uploading large datasets.
+
+---
+
+## 🏋️‍♂️ **Training the Model**
+
+### **Baseline Fine-Tuning**
+
+```bash
+python src/fine_tune.py
+```
+
+### **Fine-Tuning V2: CLAHE + Strong Augmentation**
+
+```bash
+python src/fine_tune_v2.py
+```
+
+### **Fine-Tuning V3: Focal Loss + LR Scheduling + TTA (Best Version)**
+
+```bash
+python src/fine_tune_v3.py
+```
+
+Model checkpoints are saved inside:
+
+```
+outputs/model_checkpoints/
+```
+
+(ignored in git)
+
+---
+
+## 🔍 **Inference**
+
+Run prediction on a single fundus image:
+
+```bash
+python src/main.py --image path/to/image.jpg --model outputs/model_checkpoints/best.pt
 ```
 
 ---
 
-## 🔎 Inference & Explainability
+## 🔥 **Explainability with Grad-CAM**
 
-Run inference with Grad-CAM visualization:
+Generate heatmaps:
 
 ```bash
-python src/infer.py --checkpoint outputs/checkpoints/best.pt --image path/to/fundus.jpg --cam
+python src/grad_cam.py --image path/to/image.jpg
 ```
 
----
+Sample outputs (included in repo):
 
-## 📊 Results
-
-* Classification metrics: Accuracy, Sensitivity, Specificity, F1-score
-* Outputs: Model checkpoints, Grad-CAM visual heatmaps, logs
+* `outputs/gradcam_result.jpg`
+* `outputs/gradcam_side_by_side.jpg`
 
 ---
 
-## 📚 Reference
+## 📈 **Results**
 
-* Base Paper: [A Lightweight Diabetic Retinopathy Detection Model Using a Deep-Learning Technique](https://www.mdpi.com/2075-4418/13/19/3120) (*Diagnostics, MDPI, 2023*)
+### **Grad-CAM Example**
 
+![Grad-CAM](outputs/gradcam_side_by_side.jpg)
+
+---
+
+## 🧠 **Model Architecture Overview**
+
+* **Backbone:** MobileNetV3-Small
+* **Preprocessing:** CLAHE, normalization
+* **Augmentation:** Random rotations, flips, color jitter
+* **Loss Functions:** CrossEntropy, Focal Loss
+* **Optimizer:** Adam / SGD
+* **Explainability:** Grad-CAM
+
+V3 fine-tuning demonstrated the highest performance with:
+
+* Better lesion localization
+* Improved minority-class recall
+* More stable training through cosine LR scheduling
+
+---
+
+## 🔮 **Future Scope**
+
+* Deploy as a mobile DR screening tool
+* Expand to multi-disease eye prediction (Glaucoma, AMD)
+* Integrate Vision Transformers (ViT, Swin)
+* Federated learning for privacy-preserving clinical training
+* Cloud-based inference API
+
+---
+
+## 📄 **License**
+
+This project is for academic and research purposes.
+
+Just say: **“Add badges”**, **“Add architecture diagram”**, or **“Add deployment section.”**
