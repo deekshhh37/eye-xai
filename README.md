@@ -1,4 +1,4 @@
-![gradcam_side_by_side](https://github.com/user-attachments/assets/5beb306d-6414-401e-ae86-39d352b61d78)
+
 # **Eye-XAI: Explainable Diabetic Retinopathy Classification using MobileNetV3**
 
 Eye-XAI is a lightweight, explainable deep-learning system for **Diabetic Retinopathy (DR) classification** using **MobileNetV3**.
