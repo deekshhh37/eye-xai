@@ -2,7 +2,7 @@
 # **Eye-XAI: Explainable Diabetic Retinopathy Classification using MobileNetV3**
 
 Eye-XAI is a lightweight, explainable deep-learning system for **Diabetic Retinopathy (DR) classification** using **MobileNetV3**.
-The model predicts **7 DR severity levels** and provides **Grad-CAM heatmaps** that highlight clinically relevant retinal regions used during prediction — improving transparency and trust in AI-assisted medical screening.
+The model predicts **7 DR severity levels** and provides **Grad-CAM heatmaps** that highlight clinically relevant retinal regions used during prediction, improving transparency and trust in AI-assisted medical screening.
 
 ---
 
